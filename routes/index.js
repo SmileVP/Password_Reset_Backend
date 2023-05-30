@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const jwt = require("jsonwebtoken");
 
 const { UserModel } = require("../schema/userSchema");
 
@@ -7,7 +8,6 @@ const {
   hashPassword,
   hashCompare,
   createToken,
-  forgetPasswordToken,
   decodePasswordToken,
 } = require("../config/auth");
 const { dbUrl } = require("../config/dbConfig");
