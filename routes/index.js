@@ -89,12 +89,13 @@ router.post("/send-email", async (req, res) => {
     let user = await UserModel.findOne({ email: req.body.email });
 
     if (user) {
-      let token = await forgetPasswordToken({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      });
+      let firstName = user.firstName;
+      let email = user.email;
 
+      //create token
+      let token = jwt.sign({ firstName, email }, process.env.SECRET_KEY_RESET, {
+        expiresIn: process.env.EXPIRE,
+      });
       const setUserToken = await UserModel.findByIdAndUpdate(
         { _id: user._id },
         { token: token }
@@ -104,7 +105,7 @@ router.post("/send-email", async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        message: `${url}/reset-password/${user._id}/${setUserToken.token}`,
+        message: `${url}/reset-password/${user._id}/${token}`,
       });
 
       res.status(200).send({
