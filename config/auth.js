@@ -6,7 +6,7 @@ require("dotenv").config();
 //to hide password using hash
 const hashPassword = async (password) => {
   //based on document of bcrypt
-  let salt = await bcrypt.genSalt(process.env.SALT_ROUND);
+  let salt = await bcrypt.genSalt(10);
   let hash = await bcrypt.hash(password, salt);
   return hash;
 };
