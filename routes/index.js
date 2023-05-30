@@ -15,7 +15,8 @@ const { dbUrl } = require("../config/dbConfig");
 const mongoose = require("mongoose");
 const { passwordEmail } = require("../service/passwordEmail");
 
-let url = "http://localhost:3000";
+//frontend url
+let url = "https://grand-stroopwafel-8cbda1.netlify.app";
 
 //connect to DB
 mongoose.connect(dbUrl);

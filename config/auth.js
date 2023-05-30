@@ -1,13 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const saltRound = 10;
-const secreteKey = "qw#e4t$Y58I*op9";
-const secreteKeyReset = "qw#e4t$Y58I*r5U9aW";
+
+require("dotenv").config();
 
 //to hide password using hash
 const hashPassword = async (password) => {
   //based on document of bcrypt
-  let salt = await bcrypt.genSalt(saltRound);
+  let salt = await bcrypt.genSalt(process.env.SALT_ROUND);
   let hash = await bcrypt.hash(password, salt);
   return hash;
 };
@@ -19,17 +18,25 @@ const hashCompare = (password, hash) => {
 
 //jwt(json web token) use to create token for authentication and session time
 const createToken = ({ firstName, lastName, email, role }) => {
-  let token = jwt.sign({ firstName, lastName, email, role }, secreteKey, {
-    expiresIn: "30m",
-  });
+  let token = jwt.sign(
+    { firstName, lastName, email, role },
+    process.env.SECRET_KEY,
+    {
+      expiresIn: process.env.EXPIRE,
+    }
+  );
   return token;
-};
+}
 
 //forget password validation token
 const forgetPasswordToken = ({ firstName, lastName, email }) => {
-  let token = jwt.sign({ firstName, lastName, email }, secreteKeyReset, {
-    expiresIn: "30m",
-  });
+  let token = jwt.sign(
+    { firstName, lastName, email },
+    process.env.SECRET_KEY_RESET,
+    {
+      expiresIn: process.env.EXPIRE,
+    }
+  );
   return token;
 };
 
@@ -69,7 +76,6 @@ const validate = async (req, res, next) => {
   }
 };
 
-
 module.exports = {
   hashPassword,
   hashCompare,
@@ -77,5 +83,5 @@ module.exports = {
   decodeToken,
   validate,
   forgetPasswordToken,
-  decodePasswordToken
+  decodePasswordToken,
 };

@@ -26,7 +26,7 @@ const passwordEmail = async ({ email, firstName, lastName, message }) => {
       <br>
       <br>
       <div>
-        Expires in 30 mins-${message}
+        Expires in 30 mins; Please click the link to reset you email password-${message}
       </div>
       <br>
       <footer style="text-align: center;">
